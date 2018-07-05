@@ -1,44 +1,54 @@
-import Word
 import os
 import random
 
 class Game:
 	def __init__(self):
+		self.winResult = 1
+		self.maxMishits = 9
+		self.gameStart()
+
+	def gameStart(self):
+
 		self.result = [0,0]
 		self.player = 0
-		self.winResult = 2
-		self.maxMishits = 5
 		self.win = False
+
 		while not self.win:
 			round = Round()
 			self.printFild(round)
+
 			while round.mishitCounter < self.maxMishits and not round.winRound:
 				round.takeLeter()
-				self.printFild(round)
 				if round.chechRoundWin():
-					self.result[self.player] += 1
-					print('Zgadłeś!')
-					input()
+					self.result[self.player] += 1	
+					endRoundStr = '\nZgadłeś!'
 				elif round.mishitCounter == self.maxMishits:
-					print('Niestety wisisz!')
-					input()
-					
+					endRoundStr = '\nNiestety wisisz!'
+				self.printFild(round)
+			else:
+				input(endRoundStr)
+				if self.result[self.player] == self.winResult:
+					self.win = True
+					input('Wygrywa gracz ' + str(self.player + 1))
+					self.gameStart()
 				self.changePlayer()
 					
-		if self.result[self.player] == self.winResult:
-			self.win = True
-			print('Wygrywa gracz ' + str(self.player + 1))
-
 	def changePlayer(self):
 		self.player = int(not self.player)
+		print('\a')
 
 	def printFild(self,  round):
 		os.system('cls')
-		print('playr 1: ' + str(self.result[0]) + '\t\t\tplayr 2: ' + str(self.result[1]))
-		print('\nplayr ' + str(self.player + 1) + '\t\t\t\tpudła: ' + str(round.mishitCounter) + '/' + str(self.maxMishits) + '\n\n')
-		print(round.printHangman())
-		round.printMaskedWord()
-		print('\nLitery: ' + ' '.join(sorted(round.leters)))
+
+		fild = '''[exit]: koniec gry\n
+playr 1: {}\t\t\tplayr 2: {}\n
+playr {}\t\t\t\tpudła: {}/{}
+{}\nHasło:  {}\n\nLitery: {}'''.format(
+			str(self.result[0]),  str(self.result[1]), 
+			str(self.player + 1), str(round.mishitCounter), str(self.maxMishits),
+			round.getHangman(), round.getMaskedWord(), ' '.join(sorted(round.leters))
+		)
+		print(fild)
 
 class Round:
 
@@ -54,9 +64,11 @@ class Round:
 
 	def takeLeter(self):
 		leter = input('\nPodaj literę: ')
-		while leter in self.leters:
-			leter = input('\nPodaj literę: ')
-		self.leters.append(leter)
+		if leter in ['exit', 'exit()', 'koniec']:
+			exit()
+		while leter[0] in self.leters:
+			leter = input('\nPodaj nową literę: ')
+		self.leters.append(leter[0])
 
 		if leter not in self.word:
 			self.mishitCounter += 1
@@ -66,16 +78,16 @@ class Round:
 			self.winRound = True
 		return self.winRound
 
-	def printMaskedWord(self):
+	def getMaskedWord(self):
 		maskedWord = ''
 		for leter in self.word:
 			if leter in self.leters:
 				maskedWord += leter
 			else:
 				maskedWord += ' _ '
-		print(maskedWord)
+		return maskedWord
 
-	def printHangman(self):
+	def getHangman(self):
 
 		hangmans = [
 '''		     
@@ -85,7 +97,19 @@ class Round:
 		      
 		       \n''',
 '''		     
+		      
+		      
+		      
+		      
+		    _ _\n''',
+'''		     
 		     |
+		     |
+		     |
+		     |
+		    _|_\n''',
+'''		      
+		    \|
 		     |
 		     |
 		     |
@@ -98,10 +122,23 @@ class Round:
 		    _|_\n''',
 '''		 ____
 		 |  \|
+		     |
+		     |
+		     |
+		    _|_\n''',
+'''		 ____
+		 |  \|
 		 o   |
 		     |
 		     |
 		    _|_\n''',
+'''		 ____
+		 |  \|
+		 o   |
+		 |   |
+		     |
+		    _|_\n''',
+					
 '''		 ____
 		 |  \|
 		 o   |
@@ -118,7 +155,6 @@ class Round:
 		]
 		return hangmans[self.mishitCounter]
 		
-
 
 if __name__ == '__main__':
 	game = Game()
