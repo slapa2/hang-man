@@ -3,7 +3,7 @@ import random
 
 class Game:
 	def __init__(self):
-		self.winResult = 1
+		self.winResult = 2
 		self.maxMishits = 9
 		self.gameStart()
 
@@ -38,7 +38,8 @@ class Game:
 		print('\a')
 
 	def printFild(self,  round):
-		os.system('cls')
+
+		os.system('cls' if os.name == 'nt' else 'clear')
 
 		fild = '''[exit]: koniec gry\n
 playr 1: {}\t\t\tplayr 2: {}\n
