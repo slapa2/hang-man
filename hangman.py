@@ -1,11 +1,13 @@
 import os
 import random
+import fild
 
 
 class Game:
     def __init__(self):
         self.winResult = 2
         self.maxMishits = 9
+        self.hangman = fild.Pictures()
         self.result = [0, 0]
         self.player = 0
         self.win = False
@@ -48,7 +50,7 @@ playr {}\t\t\t\tpudła: {}/{}
 {}\nHasło:  {}\n\nLitery: {}'''.format(
             str(self.result[0]), str(self.result[1]),
             str(self.player + 1), str(round.mishitCounter), str(self.maxMishits),
-            round.getHangman(), round.getMaskedWord(), ' '.join(sorted(round.leters))
+            self.hangman.getHangman(round.mishitCounter), round.getMaskedWord(), ' '.join(sorted(round.leters))
         )
         print(fild)
 
@@ -89,74 +91,6 @@ class Round:
             else:
                 maskedWord += ' _ '
         return maskedWord
-
-    def getHangman(self):
-
-        hangmans = [
-            '''		     
-                          
-                          
-                          
-                          
-                           \n''',
-            '''		     
-                          
-                          
-                          
-                          
-                        _ _\n''',
-            '''		     
-                         |
-                         |
-                         |
-                         |
-                        _|_\n''',
-            '''		      
-                        \|
-                         |
-                         |
-                         |
-                        _|_\n''',
-            '''		 ____
-                        \|
-                         |
-                         |
-                         |
-                        _|_\n''',
-            '''		 ____
-                     |  \|
-                         |
-                         |
-                         |
-                        _|_\n''',
-            '''		 ____
-                     |  \|
-                     o   |
-                         |
-                         |
-                        _|_\n''',
-            '''		 ____
-                     |  \|
-                     o   |
-                     |   |
-                         |
-                        _|_\n''',
-
-            '''		 ____
-                     |  \|
-                     o   |
-                    /|\  |
-                         |
-                        _|_\n''',
-
-            '''		 ____
-                     |  \|
-                     o   |
-                    /|\  |
-                    /\   |
-                        _|_\n'''
-        ]
-        return hangmans[self.mishitCounter]
 
 
 if __name__ == '__main__':
