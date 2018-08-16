@@ -1,33 +1,33 @@
-import os
 import random
-import fild
+from fild import Fild
 
 
 class Game:
     def __init__(self):
         self.winResult = 2
         self.maxMishits = 9
-        self.hangman = fild.Pictures()
         self.result = [0, 0]
         self.player = 0
         self.win = False
+        self.fild = Fild()
+        self.round = Round()
         self.gameStart()
 
     def gameStart(self):
 
         while not self.win:
-            round = Round()
-            self.printFild(round)
+            self.round.newRound()
+            self.fild.printFild(self)
             endRoundStr = ''
 
-            while round.mishitCounter < self.maxMishits and not round.winRound:
-                round.takeLeter()
-                if round.chechRoundWin():
+            while self.round.mishitCounter < self.maxMishits and not self.round.winRound:
+                self.round.takeLeter()
+                self.fild.printFild(self)
+                if self.round.chechRoundWin():
                     self.result[self.player] += 1
                     endRoundStr = '\nZgadłeś!'
-                elif round.mishitCounter == self.maxMishits:
-                    endRoundStr = '\nNiestety wisisz!'
-                self.printFild(round)
+                elif self.round.mishitCounter == self.maxMishits:
+                    endRoundStr = '\nNiestety wisisz!\nHasło to: {}'.format(self.round.word)
 
             input(endRoundStr)
             if self.result[self.player] == self.winResult:
@@ -40,33 +40,18 @@ class Game:
         self.player = int(not self.player)
         print('\a')
 
-    def printFild(self, round):
-
-        os.system('cls' if os.name == 'nt' else 'clear')
-        fild = """_________________________________________________________
-|                                                       |
-| player 1              {} : {}             player 2    |
-|_______________________________________________________|
-|  gracz: {}                              pudła: {}/{}   |
-{}
-| hasło: {}|
-|_______________________________________________________|
-|         |                                             |
-| litery  | {} |
-|_________|_____________________________________________|
-aby zakończyć gerę wpisz: "exit""".format(
-            str(self.result[0]).rjust(2), str(self.result[1]).ljust(2),
-            str(self.player + 1), str(round.mishitCounter).rjust(2), str(self.maxMishits).ljust(2),
-            self.hangman.getHangman(round.mishitCounter), round.getMaskedWord().ljust(47), ' '.join(sorted(round.leters)).ljust(43)
-        )
-        print(fild)
-
 
 class Round:
 
     def __init__(self):
         self.word = self.getRandomWord()
-        self.leters = []
+        self.letters = []
+        self.mishitCounter = 0
+        self.winRound = False
+
+    def newRound(self):
+        self.word = self.getRandomWord()
+        self.letters = []
         self.mishitCounter = 0
         self.winRound = False
 
@@ -75,26 +60,26 @@ class Round:
         return random.choice(words)
 
     def takeLeter(self):
-        leter = input('\nPodaj literę: ')
-        if leter in ['exit', 'exit()', 'koniec']:
+        letter = input('\nPodaj literę: ')
+        if letter in ['exit', 'exit()', 'koniec']:
             exit()
-        while leter[0] in self.leters:
-            leter = input('\nPodaj nową literę: ')
-        self.leters.append(leter[0])
+        while letter[0] in self.letters:
+            letter = input('\nPodaj nową literę: ')
+        self.letters.append(letter[0])
 
-        if leter not in self.word:
+        if letter not in self.word:
             self.mishitCounter += 1
 
     def chechRoundWin(self):
-        if set(list(self.word)) <= set(self.leters):
+        if set(list(self.word)) <= set(self.letters):
             self.winRound = True
         return self.winRound
 
     def getMaskedWord(self):
         maskedWord = ''
-        for leter in self.word:
-            if leter in self.leters:
-                maskedWord += leter
+        for letter in self.word:
+            if letter in self.letters:
+                maskedWord += letter
             else:
                 maskedWord += ' _ '
         return maskedWord
