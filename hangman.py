@@ -38,7 +38,6 @@ class Game:
 
     def changePlayer(self):
         self.player = int(not self.player)
-        print('\a')
 
 
 class Round:
