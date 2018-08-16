@@ -43,14 +43,21 @@ class Game:
     def printFild(self, round):
 
         os.system('cls' if os.name == 'nt' else 'clear')
-
-        fild = '''[exit]: koniec gry\n
-playr 1: {}\t\t\tplayr 2: {}\n
-playr {}\t\t\t\tpudła: {}/{}
-{}\nHasło:  {}\n\nLitery: {}'''.format(
-            str(self.result[0]), str(self.result[1]),
-            str(self.player + 1), str(round.mishitCounter), str(self.maxMishits),
-            self.hangman.getHangman(round.mishitCounter), round.getMaskedWord(), ' '.join(sorted(round.leters))
+        fild = """_________________________________________________________
+|                                                       |
+| player 1              {} : {}             player 2    |
+|_______________________________________________________|
+|  gracz: {}                              pudła: {}/{}   |
+{}
+| hasło: {}|
+|_______________________________________________________|
+|         |                                             |
+| litery  | {} |
+|_________|_____________________________________________|
+aby zakończyć gerę wpisz: "exit""".format(
+            str(self.result[0]).rjust(2), str(self.result[1]).ljust(2),
+            str(self.player + 1), str(round.mishitCounter).rjust(2), str(self.maxMishits).ljust(2),
+            self.hangman.getHangman(round.mishitCounter), round.getMaskedWord().ljust(47), ' '.join(sorted(round.leters)).ljust(43)
         )
         print(fild)
 
