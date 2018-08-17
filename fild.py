@@ -1,4 +1,5 @@
 import os
+from math import ceil
 
 class Fild:
     def __init__(self):
@@ -81,8 +82,24 @@ aby zakończyć gerę wpisz: \"exit\""""
             '''|                         ____                          |
 |                        |  \|                          |
 |                        o   |                          |
+|                       /|   |                          |
+|                            |                          |
+|                           _|_                         |
+|                                                       |''',
+
+            '''|                         ____                          |
+|                        |  \|                          |
+|                        o   |                          |
 |                       /|\  |                          |
 |                            |                          |
+|                           _|_                         |
+|                                                       |''',
+
+            '''|                         ____                          |
+|                        |  \|                          |
+|                        o   |                          |
+|                       /|\  |                          |
+|                       /    |                          |
 |                           _|_                         |
 |                                                       |''',
 
@@ -95,8 +112,8 @@ aby zakończyć gerę wpisz: \"exit\""""
 |                                                       |'''
     ]
 
-    def _getHangman(self, mishits):
-        return self.hangmans[mishits]
+    def _getHangman(self, mishits, maxMishits):
+        return self.hangmans[ceil(mishits * (11/maxMishits))]
 
     def printFild(self, game):
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -107,7 +124,7 @@ aby zakończyć gerę wpisz: \"exit\""""
                 str(game.player + 1),
                 str(game.round.mishitCounter).rjust(2),
                 str(game.maxMishits).ljust(2),
-                self._getHangman(game.round.mishitCounter),
+                self._getHangman(game.round.mishitCounter, game.maxMishits),
                 game.round.getMaskedWord().ljust(47),
                 ' '.join(sorted(game.round.letters)).ljust(43)
             )

@@ -3,9 +3,9 @@ from fild import Fild
 
 
 class Game:
-    def __init__(self):
-        self.winResult = 2
-        self.maxMishits = 9
+    def __init__(self, winResult, maxMishits):
+        self.winResult = winResult
+        self.maxMishits = maxMishits
         self.result = [0, 0]
         self.player = 0
         self.win = False
@@ -85,4 +85,16 @@ class Round:
 
 
 if __name__ == '__main__':
-    game = Game()
+
+    print("""     _____  _____  _____  _____  _____  _____  _____ 
+    |  |  ||  _  ||   | ||   __||     ||  _  ||   | |
+    |     ||     || | | ||  |  || | | ||     || | | |
+    |__|__||__|__||_|___||_____||_|_|_||__|__||_|___|\n""")
+
+    winResulr = input("Do ilu wygranych grancie? max (1-99)")
+    while not winResulr.isdecimal() or int(winResulr) < 1 or int(winResulr) > 99:
+        winResulr = input("Podaj poprawną liczbę! ")
+    maxMishits = input("Do ile pudeł kończy rundę? (1-11) ")
+    while not maxMishits.isdecimal() or int(maxMishits) < 1 or int(maxMishits) > 11:
+        maxMishits = input("Podaj poprawną liczbę! ")
+    game = Game(int(winResulr), int(maxMishits))
