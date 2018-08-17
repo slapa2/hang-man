@@ -116,7 +116,7 @@ aby zakończyć gerę wpisz: \"exit\""""
         return self.hangmans[ceil(mishits * (11/maxMishits))]
 
     def printFild(self, game):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        # os.system('cls' if os.name == 'nt' else 'clear')
         print(
             self.fild.format(
                 str(game.result[0]).rjust(2),

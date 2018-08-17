@@ -21,7 +21,7 @@ class Game:
             endRoundStr = ''
 
             while self.round.mishitCounter < self.maxMishits and not self.round.winRound:
-                self.round.takeLeter()
+                self.round.takeLetter()
                 self.fild.printFild(self)
                 if self.round.chechRoundWin():
                     self.result[self.player] += 1
@@ -58,16 +58,25 @@ class Round:
         words = ['taboret', 'kwiatek', 'mlotek']
         return random.choice(words)
 
-    def takeLeter(self):
-        letter = input('\nPodaj literę: ')
-        if letter in ['exit', 'exit()', 'koniec']:
-            exit()
-        while letter[0] in self.letters:
-            letter = input('\nPodaj nową literę: ')
-        self.letters.append(letter[0])
-
+    def takeLetter(self):
+        letter = self.getLetter()
+        self.letters.append(letter)
         if letter not in self.word:
             self.mishitCounter += 1
+
+    def getLetter(self):
+
+        letter = input('\nPodaj literę: ')
+        while not letter.isalpha() or len(letter) != 1:
+            if letter in ['exit', 'exit()', 'koniec']:
+                exit()
+            letter = input('\nPodaj poprawną literę: ')
+
+        letter = letter.lower()
+        if letter in self.letters:
+            print("Tą literę już podałeś!")
+            letter = self.getLetter()
+        return letter
 
     def chechRoundWin(self):
         if set(list(self.word)) <= set(self.letters):
@@ -82,6 +91,9 @@ class Round:
             else:
                 maskedWord += ' _ '
         return maskedWord
+
+
+
 
 
 if __name__ == '__main__':
