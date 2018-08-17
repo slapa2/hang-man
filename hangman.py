@@ -3,97 +3,93 @@ from fild import Fild
 
 
 class Game:
-    def __init__(self, winResult, maxMishits):
-        self.winResult = winResult
-        self.maxMishits = maxMishits
+    def __init__(self, win_result, max_mishits):
+        self.win_result = win_result
+        self.max_mishits = max_mishits
         self.result = [0, 0]
         self.player = 0
         self.win = False
         self.fild = Fild()
         self.round = Round()
-        self.gameStart()
+        self.game_start()
 
-    def gameStart(self):
+    def game_start(self):
 
         while not self.win:
-            self.round.newRound()
-            self.fild.printFild(self)
-            endRoundStr = ''
+            self.round.new_round()
+            self.fild.print_fild(self)
+            end_round_str = ''
 
-            while self.round.mishitCounter < self.maxMishits and not self.round.winRound:
-                self.round.takeLetter()
-                self.fild.printFild(self)
-                if self.round.chechRoundWin():
+            while self.round.mishit_counter < self.max_mishits and not self.round.win_round:
+                self.round.take_letter()
+                self.fild.print_fild(self)
+                if self.round.check_round_win():
                     self.result[self.player] += 1
-                    endRoundStr = '\nZgadłeś!'
-                elif self.round.mishitCounter == self.maxMishits:
-                    endRoundStr = '\nNiestety wisisz!\nHasło to: {}'.format(self.round.word)
+                    end_round_str = '\nZgadłeś!'
+                elif self.round.mishit_counter == self.max_mishits:
+                    end_round_str = '\nNiestety wisisz!\nHasło to: {}'.format(self.round.word)
 
-            input(endRoundStr)
-            if self.result[self.player] == self.winResult:
+            input(end_round_str)
+            if self.result[self.player] == self.win_result:
                 self.win = True
                 input('Wygrywa gracz ' + str(self.player + 1))
-                self.gameStart()
-            self.changePlayer()
+                self.game_start()
+            self.change_player()
 
-    def changePlayer(self):
+    def change_player(self):
         self.player = int(not self.player)
 
 
 class Round:
 
     def __init__(self):
-        self.word = self.getRandomWord()
+        self.word = ''
         self.letters = []
-        self.mishitCounter = 0
-        self.winRound = False
+        self.mishit_counter = 0
+        self.win_round = False
 
-    def newRound(self):
-        self.word = self.getRandomWord()
+    def new_round(self):
+        self.word = self.get_random_word()
         self.letters = []
-        self.mishitCounter = 0
-        self.winRound = False
+        self.mishit_counter = 0
+        self.win_round = False
 
-    def getRandomWord(self):
+    def get_random_word(self):
         words = ['taboret', 'kwiatek', 'mlotek']
         return random.choice(words)
 
-    def takeLetter(self):
-        letter = self.getLetter()
+    def take_letter(self):
+        letter = self.get_letter()
         self.letters.append(letter)
         if letter not in self.word:
-            self.mishitCounter += 1
+            self.mishit_counter += 1
 
-    def getLetter(self):
-
+    def get_letter(self):
         letter = input('\nPodaj literę: ')
         while not letter.isalpha() or len(letter) != 1:
-            if letter in ['exit', 'exit()', 'koniec']:
+            if letter.lower() in ['exit', 'exit()', 'koniec']:
                 exit()
             letter = input('\nPodaj poprawną literę: ')
 
         letter = letter.lower()
         if letter in self.letters:
             print("Tą literę już podałeś!")
-            letter = self.getLetter()
+            letter = self.get_letter()
         return letter
 
-    def chechRoundWin(self):
+    def check_round_win(self):
         if set(list(self.word)) <= set(self.letters):
-            self.winRound = True
-        return self.winRound
+            self.win_round = True
+        return self.win_round
 
-    def getMaskedWord(self):
-        maskedWord = ''
+    def get_masked_word(self):
+        masked_word = ''
         for letter in self.word:
             if letter in self.letters:
-                maskedWord += letter
+                masked_word += letter
             else:
-                maskedWord += ' _ '
-        return maskedWord
-
-
-
+                masked_word += ' _ '
+        return masked_word
 
 
 if __name__ == '__main__':
@@ -103,10 +99,10 @@ if __name__ == '__main__':
     |     ||     || | | ||  |  || | | ||     || | | |
     |__|__||__|__||_|___||_____||_|_|_||__|__||_|___|\n""")
 
-    winResulr = input("Do ilu wygranych grancie? max (1-99)")
-    while not winResulr.isdecimal() or int(winResulr) < 1 or int(winResulr) > 99:
-        winResulr = input("Podaj poprawną liczbę! ")
-    maxMishits = input("Do ile pudeł kończy rundę? (1-11) ")
-    while not maxMishits.isdecimal() or int(maxMishits) < 1 or int(maxMishits) > 11:
-        maxMishits = input("Podaj poprawną liczbę! ")
-    game = Game(int(winResulr), int(maxMishits))
+    win_result = input("Do ilu wygranych grancie? max (1-99)")
+    while not win_result.isdecimal() or int(win_result) < 1 or int(win_result) > 99:
+        win_result = input("Podaj poprawną liczbę! ")
+    max_mishits = input("Do ile pudeł kończy rundę? (1-11) ")
+    while not max_mishits.isdecimal() or int(max_mishits) < 1 or int(max_mishits) > 11:
+        max_mishits = input("Podaj poprawną liczbę! ")
+    game = Game(int(win_result), int(max_mishits))

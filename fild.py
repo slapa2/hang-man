@@ -1,6 +1,7 @@
 import os
 from math import ceil
 
+
 class Fild:
     def __init__(self):
         self.fild = """                                            
@@ -112,20 +113,20 @@ aby zakończyć gerę wpisz: \"exit\""""
 |                                                       |'''
     ]
 
-    def _getHangman(self, mishits, maxMishits):
-        return self.hangmans[ceil(mishits * (11/maxMishits))]
+    def _get_hangman(self, mishits, max_mishits):
+        return self.hangmans[ceil(mishits * (11/max_mishits))]
 
-    def printFild(self, game):
-        # os.system('cls' if os.name == 'nt' else 'clear')
+    def print_fild(self, game):
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(
             self.fild.format(
                 str(game.result[0]).rjust(2),
                 str(game.result[1]).ljust(2),
                 str(game.player + 1),
-                str(game.round.mishitCounter).rjust(2),
-                str(game.maxMishits).ljust(2),
-                self._getHangman(game.round.mishitCounter, game.maxMishits),
-                game.round.getMaskedWord().ljust(47),
+                str(game.round.mishit_counter).rjust(2),
+                str(game.max_mishits).ljust(2),
+                self._get_hangman(game.round.mishit_counter, game.max_mishits),
+                game.round.get_masked_word().ljust(47),
                 ' '.join(sorted(game.round.letters)).ljust(43)
             )
         )
