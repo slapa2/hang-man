@@ -1,4 +1,4 @@
-file_name = 'test_words.txt'
+file_name = 'wiki_nouns.txt'
 
 
 class Words:
@@ -11,7 +11,7 @@ class Words:
 
     def create_words_list(self):
         words = []
-        with open(file_name, 'r') as f:
+        with open('dicts/' + file_name, 'r') as f:
             for line in f:
                 words.append(line.rstrip())
         return words

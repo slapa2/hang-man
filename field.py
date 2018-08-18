@@ -127,6 +127,6 @@ aby zakończyć gerę wpisz: \"exit\""""
                 str(game.max_mishits).ljust(2),
                 self._get_hangman(game.round.mishit_counter, game.max_mishits),
                 game.round.get_masked_word().ljust(47),
-                ' '.join(sorted(game.round.letters[1:])).ljust(43)
+                ''.join(sorted(game.round.letters[1:])).ljust(43)
             )
         )
