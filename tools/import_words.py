@@ -6,7 +6,7 @@ class Words:
 
     def __init__(self):
         self.api_url = 'https://pl.wiktionary.org/w/api.php?action=query&list=categorymembers&cmtype=page&' \
-                  'cmtitle=Category:J%C4%99zyk+polski+-+rzeczowniki&format=json&cmprop=title&cmlimit=500{}'
+            'cmtitle=Category:J%C4%99zyk+polski+-+rzeczowniki&format=json&cmprop=title&cmlimit=500{}'
         self.cont = ' '
         self.counter = 0
         self.words = list()
@@ -14,7 +14,6 @@ class Words:
             self.words.extend(self.get_data())
         else:
             print()
-
 
     def get_data(self):
         ret = []
@@ -36,8 +35,8 @@ class Words:
 
 if __name__ == "__main__":
     words = Words()
-    filtered_words = filter(lambda x: x.isalpha() and (' ' not in x) and (True not in map(lambda l: l.isupper(), x)), words.words)
+    filtered_words = filter(lambda x: x.isalpha() and (' ' not in x) and (
+        True not in map(lambda l: l.isupper(), x)), words.words)
 
     with open('wiki_nouns.txt', 'w') as f:
         f.write('\n'.join(filtered_words))
-

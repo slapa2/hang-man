@@ -4,6 +4,7 @@ from words import Words
 
 
 class Game:
+
     def __init__(self, win_result, max_mishits, words):
         self.win_result = win_result
         self.max_mishits = max_mishits
@@ -29,7 +30,8 @@ class Game:
                     self.result[self.player] += 1
                     end_round_str = '\nZgadłeś!'
                 elif self.round.mishit_counter == self.max_mishits:
-                    end_round_str = '\nNiestety wisisz!\nHasło to: {}'.format(self.round.word)
+                    end_round_str = '\nNiestety wisisz!\nHasło to: {}'.format(
+                        self.round.word)
 
             input(end_round_str)
             if self.result[self.player] == self.win_result:
@@ -128,6 +130,5 @@ if __name__ == '__main__':
 
     print(min_word_len, max_word_len)
 
-    game = Game(win_result, max_mishits, words.get_words(min_word_len, max_word_len))
-
-
+    game = Game(win_result, max_mishits,
+                words.get_words(min_word_len, max_word_len))

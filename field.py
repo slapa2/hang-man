@@ -3,6 +3,7 @@ from math import ceil
 
 
 class Field:
+
     def __init__(self):
         self.field = """                                            
      _____  _____  _____  _____  _____  _____  _____ 
@@ -111,10 +112,10 @@ aby zakończyć gerę wpisz: \"exit\""""
 |                       / \  |                          |
 |                           _|_                         |
 |                                                       |'''
-    ]
+        ]
 
     def _get_hangman(self, mishits, max_mishits):
-        return self.hangmans[ceil(mishits * (11/max_mishits))]
+        return self.hangmans[ceil(mishits * (11 / max_mishits))]
 
     def print_fild(self, game):
         os.system('cls' if os.name == 'nt' else 'clear')
